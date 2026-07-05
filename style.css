@@ -1,0 +1,481 @@
+/* ============================================================
+   TOKENS
+   ============================================================ */
+:root {
+  --ink: #1B2430;
+  --ink-2: #202B38;
+  --panel: #232E3D;
+  --panel-raised: #2B3849;
+  --line: #3C4C5F;
+  --parchment: #EDE6D6;
+  --parchment-dim: #B9C2CC;
+  --bronze: #C9A227;
+  --bronze-soft: rgba(201, 162, 39, 0.18);
+  --teal: #55B7A9;
+  --teal-soft: rgba(85, 183, 169, 0.18);
+  --red: #D6685A;
+  --red-soft: rgba(214, 104, 90, 0.18);
+
+  --font-display: 'Fraunces', serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--ink);
+  color: var(--parchment);
+  font-family: var(--font-body);
+  line-height: 1.55;
+}
+
+/* ============================================================
+   SIGNATURE ELEMENT: la banda decorativa "friso"
+   Una fila repetida de rombos que hace eco de la regla ad-bc=1
+   ============================================================ */
+.frieze-band {
+  height: 34px;
+  width: 100%;
+  background-image: repeating-linear-gradient(
+    135deg,
+    var(--bronze) 0px, var(--bronze) 2px,
+    transparent 2px, transparent 17px
+  ),
+  repeating-linear-gradient(
+    45deg,
+    var(--bronze) 0px, var(--bronze) 2px,
+    transparent 2px, transparent 17px
+  );
+  background-color: var(--ink-2);
+  opacity: 0.85;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 3rem;
+  text-align: center;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  color: var(--bronze);
+  margin: 0 0 1rem;
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(2.4rem, 6vw, 4rem);
+  line-height: 1.05;
+  margin: 0 0 1.25rem;
+  letter-spacing: -0.01em;
+}
+
+.hero h1 em {
+  font-style: italic;
+  font-weight: 500;
+  color: var(--bronze);
+}
+
+.hero-sub {
+  color: var(--parchment-dim);
+  font-size: 1.05rem;
+  max-width: 560px;
+  margin: 0 auto 2.5rem;
+}
+
+.rule {
+  font-family: var(--font-mono);
+  color: var(--teal);
+  background: var(--teal-soft);
+  padding: 0.1em 0.5em;
+  border-radius: 4px;
+}
+
+/* Diamante decorativo del hero */
+.diamond-hero {
+  --cell: 52px;
+  position: relative;
+  width: calc(var(--cell) * 3.4);
+  height: calc(var(--cell) * 2.6);
+  margin: 0 auto;
+}
+.diamond-hero > div {
+  position: absolute;
+  width: var(--cell);
+  height: var(--cell);
+  border: 1.5px solid var(--bronze);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--bronze);
+  background: var(--bronze-soft);
+}
+.d-b { top: 0; left: calc(50% - var(--cell)/2); }
+.d-a { top: calc(var(--cell) * 0.8); left: 0; border-color: var(--parchment); color: var(--parchment); background: rgba(237,230,214,0.06); }
+.d-d { top: calc(var(--cell) * 0.8); right: 0; border-color: var(--parchment); color: var(--parchment); background: rgba(237,230,214,0.06); }
+.d-c { top: calc(var(--cell) * 1.6); left: calc(50% - var(--cell)/2); }
+
+/* ============================================================
+   TABS
+   ============================================================ */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 1rem;
+  background: var(--ink-2);
+}
+
+.tab-btn {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  letter-spacing: 0.03em;
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--parchment-dim);
+  padding: 0.65rem 1.1rem;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.tab-btn:hover { border-color: var(--bronze); color: var(--parchment); }
+.tab-btn.active {
+  background: var(--bronze);
+  border-color: var(--bronze);
+  color: var(--ink);
+  font-weight: 600;
+}
+.tab-btn:focus-visible, button:focus-visible, input:focus-visible {
+  outline: 2px solid var(--teal);
+  outline-offset: 2px;
+}
+
+/* ============================================================
+   MAIN / PANELS
+   ============================================================ */
+main {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 3rem 1.5rem 5rem;
+}
+
+.panel { display: none; animation: fade-in 0.3s ease; }
+.panel.active { display: block; }
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel h2 {
+  font-family: var(--font-display);
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.panel-intro {
+  color: var(--parchment-dim);
+  max-width: 640px;
+  margin-bottom: 2rem;
+}
+
+.panel-intro code {
+  font-family: var(--font-mono);
+  background: var(--panel-raised);
+  padding: 0.1em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+/* ============================================================
+   CONTROLS
+   ============================================================ */
+.controls-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.controls-row label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--parchment-dim);
+}
+
+.checkbox-label {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 0.5rem !important;
+}
+
+input[type="number"] {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--parchment);
+  padding: 0.55rem 0.7rem;
+  border-radius: 8px;
+  font-family: var(--font-mono);
+  width: 90px;
+  font-size: 0.95rem;
+}
+
+.btn-primary, .btn-secondary {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.88rem;
+  padding: 0.6rem 1.15rem;
+  border-radius: 8px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: transform 0.1s ease, opacity 0.15s ease;
+}
+.btn-primary { background: var(--bronze); color: var(--ink); }
+.btn-secondary { background: transparent; border-color: var(--line); color: var(--parchment); }
+.btn-primary:hover, .btn-secondary:hover { opacity: 0.85; }
+.btn-primary:active, .btn-secondary:active { transform: scale(0.97); }
+
+/* ============================================================
+   SEQUENCE STEPS (Tab 1)
+   ============================================================ */
+.seq-steps {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.seq-step {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.9rem 1.1rem;
+  opacity: 0;
+  transform: translateX(-8px);
+  animation: step-in 0.35s ease forwards;
+}
+
+@keyframes step-in {
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.seq-step .step-index {
+  font-family: var(--font-mono);
+  color: var(--bronze);
+  font-size: 0.8rem;
+  min-width: 2rem;
+}
+
+.seq-step .step-formula {
+  font-family: var(--font-mono);
+  font-size: 0.95rem;
+  color: var(--parchment-dim);
+}
+
+.seq-step .step-result {
+  margin-left: auto;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  color: var(--teal);
+  font-size: 1.05rem;
+}
+
+.period-banner {
+  margin-top: 1.5rem;
+  background: var(--teal-soft);
+  border: 1px solid var(--teal);
+  color: var(--parchment);
+  padding: 1rem 1.25rem;
+  border-radius: 10px;
+}
+
+/* ============================================================
+   FRIEZE GRID (Tab 2 y 4)
+   ============================================================ */
+.grid-wrap {
+  overflow-x: auto;
+  padding: 1rem 0 2rem;
+}
+
+.frieze-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  width: max-content;
+  margin: 0 auto;
+  font-family: var(--font-mono);
+}
+
+.grid-row {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.grid-cell {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  font-size: 1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--parchment-dim);
+  opacity: 0;
+  transform: scale(0.85);
+  transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.grid-cell.boundary { color: var(--line); background: transparent; border-style: dashed; }
+.grid-cell.revealed { opacity: 1; transform: scale(1); animation: pop-in 0.3s ease; }
+.grid-cell.fundamental { border-color: var(--bronze); color: var(--bronze); background: var(--bronze-soft); font-weight: 600; }
+.grid-cell.current { border-color: var(--teal); box-shadow: 0 0 0 3px var(--teal-soft); }
+
+@keyframes pop-in {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.grid-caption {
+  font-size: 0.82rem;
+  color: var(--parchment-dim);
+  text-align: center;
+}
+
+/* Builder grid inputs */
+.frieze-grid.builder .grid-cell {
+  padding: 0;
+}
+.frieze-grid.builder .grid-cell.editable {
+  opacity: 1;
+  transform: none;
+  background: var(--panel);
+}
+.frieze-grid.builder input {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  color: var(--parchment);
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1rem;
+}
+.grid-cell.valid { border-color: var(--teal); background: var(--teal-soft); }
+.grid-cell.invalid { border-color: var(--red); background: var(--red-soft); }
+
+/* ============================================================
+   DIAMOND CALCULATOR (Tab 3)
+   ============================================================ */
+.diamond-calc {
+  position: relative;
+  width: 260px;
+  height: 220px;
+  margin: 0 auto 1.5rem;
+}
+
+.diamond-svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.diamond-inputs {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.diamond-inputs label {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--parchment-dim);
+}
+
+.diamond-inputs input {
+  width: 64px;
+  text-align: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--parchment);
+  padding: 0.4rem;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+}
+
+.pos-b { top: 0; left: 50%; transform: translateX(-50%); }
+.pos-a { top: 78px; left: 0; }
+.pos-d { top: 78px; right: 0; }
+.pos-c { top: 156px; left: 50%; transform: translateX(-50%); }
+
+.calc-result {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 1.15rem;
+  color: var(--teal);
+  min-height: 1.6em;
+}
+
+.calc-result.error { color: var(--red); }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+footer {
+  text-align: center;
+  padding: 2rem 1rem 3rem;
+  color: var(--parchment-dim);
+  font-size: 0.82rem;
+  font-family: var(--font-mono);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 560px) {
+  .grid-cell { width: 38px; height: 38px; font-size: 0.85rem; }
+  .diamond-hero { --cell: 42px; }
+  .controls-row { align-items: stretch; }
+}

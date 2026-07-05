@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frisos de Conway–Coxeter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="frieze-band" aria-hidden="true"></div>
+
+<header class="hero">
+  <p class="eyebrow">Licenciatura en Matemáticas · Exposición</p>
+  <h1>Frisos de<br><em>Conway&ndash;Coxeter</em></h1>
+  <p class="hero-sub">Una tabla infinita bordeada de ceros y unos, donde cada
+    rombo de vecinos guarda el mismo secreto: <span class="rule">ad &minus; bc = 1</span>.</p>
+
+  <div class="diamond-hero" aria-hidden="true">
+    <div class="d-b">b</div>
+    <div class="d-a">a</div>
+    <div class="d-d">d</div>
+    <div class="d-c">c</div>
+  </div>
+</header>
+
+<div class="frieze-band" aria-hidden="true"></div>
+
+<nav class="tabs" role="tablist">
+  <button class="tab-btn active" data-tab="recurrencia" role="tab" aria-selected="true">01 · Recurrencia</button>
+  <button class="tab-btn" data-tab="cuadricula" role="tab" aria-selected="false">02 · Cuadrícula</button>
+  <button class="tab-btn" data-tab="calculadora" role="tab" aria-selected="false">03 · Calculadora</button>
+  <button class="tab-btn" data-tab="constructor" role="tab" aria-selected="false">04 · Constructor</button>
+</nav>
+
+<main>
+
+  <!-- SECCIÓN 1: Recurrencia de Lyness -->
+  <section id="recurrencia" class="panel active">
+    <h2>La recurrencia se repite a sí misma</h2>
+    <p class="panel-intro">Si llenamos el friso con variables en lugar de números
+      (Ejemplo 2 del documento), cada entrada se calcula con
+      <code>x<sub>n</sub> = (1 + x<sub>n&minus;1</sub>) / x<sub>n&minus;2</sub></code>.
+      Elige <code>x₁</code> y <code>x₂</code> y observa cómo, tras cinco pasos,
+      el patrón regresa a su punto de partida &mdash; sin importar qué números elijas.</p>
+
+    <div class="controls-row">
+      <label>x₁
+        <input type="number" id="x1-input" value="2" step="any">
+      </label>
+      <label>x₂
+        <input type="number" id="x2-input" value="3" step="any">
+      </label>
+      <button id="btn-random-xy" class="btn-secondary">🎲 Aleatorio</button>
+      <button id="btn-play-seq" class="btn-primary">▶ Reproducir pasos</button>
+      <button id="btn-reset-seq" class="btn-secondary">Reiniciar</button>
+    </div>
+
+    <ol class="seq-steps" id="seq-steps"></ol>
+
+    <p class="period-banner" id="period-banner" hidden>
+      El friso regresa a <strong>(x₁, x₂)</strong> exactamente en el sexto y
+      séptimo paso &mdash; el periodo es <strong>5</strong>.
+    </p>
+  </section>
+
+  <!-- SECCIÓN 2: Explorador de cuadrícula -->
+  <section id="cuadricula" class="panel">
+    <h2>El friso numérico del Ejemplo 1</h2>
+    <p class="panel-intro">Este es el friso construido en el documento a partir
+      de una fila de unos. Cada entrada satisface la regla del diamante. Los
+      números en negrita forman el <strong>dominio fundamental</strong>: el
+      bloque mínimo que se repite indefinidamente hacia los lados.</p>
+
+    <div class="controls-row">
+      <button id="btn-play-grid" class="btn-primary">▶ Construir columna por columna</button>
+      <button id="btn-reset-grid" class="btn-secondary">Reiniciar</button>
+      <label class="checkbox-label">
+        <input type="checkbox" id="toggle-fundamental" checked>
+        Resaltar dominio fundamental
+      </label>
+    </div>
+
+    <div class="grid-wrap">
+      <div class="frieze-grid" id="frieze-grid"></div>
+    </div>
+
+    <p class="grid-caption">Fuente: documento de la exposición, Ejemplo 1.</p>
+  </section>
+
+  <!-- SECCIÓN 3: Calculadora de diamante -->
+  <section id="calculadora" class="panel">
+    <h2>Calculadora del diamante</h2>
+    <p class="panel-intro">Todo diamante de vecinos en un friso cumple
+      <code>ad &minus; bc = 1</code>. Ingresa tres valores cualesquiera y calcula
+      el cuarto. Útil para resolver ejemplos en vivo durante la exposición.</p>
+
+    <div class="diamond-calc">
+      <svg viewBox="0 0 260 220" class="diamond-svg" aria-hidden="true">
+        <line x1="130" y1="30" x2="60" y2="110" stroke="var(--line)" stroke-width="2"/>
+        <line x1="130" y1="30" x2="200" y2="110" stroke="var(--line)" stroke-width="2"/>
+        <line x1="60" y1="110" x2="130" y2="190" stroke="var(--line)" stroke-width="2"/>
+        <line x1="200" y1="110" x2="130" y2="190" stroke="var(--line)" stroke-width="2"/>
+      </svg>
+      <div class="diamond-inputs">
+        <label class="pos-b">b <input type="number" id="calc-b" placeholder="b"></label>
+        <label class="pos-a">a <input type="number" id="calc-a" placeholder="a"></label>
+        <label class="pos-d">d <input type="number" id="calc-d" placeholder="d"></label>
+        <label class="pos-c">c <input type="number" id="calc-c" placeholder="c"></label>
+      </div>
+    </div>
+
+    <div class="controls-row">
+      <button id="btn-calc-solve" class="btn-primary">Calcular valor faltante</button>
+      <button id="btn-calc-clear" class="btn-secondary">Limpiar</button>
+    </div>
+
+    <p class="calc-result" id="calc-result" aria-live="polite"></p>
+  </section>
+
+  <!-- SECCIÓN 4: Constructor libre -->
+  <section id="constructor" class="panel">
+    <h2>Construye tu propio friso</h2>
+    <p class="panel-intro">Edita la fila del medio (los "unos" ya están fijos
+      arriba y abajo, como exige la definición). Cada diamante que completes
+      correctamente se marca en verde; si no cumple la regla, en rojo.</p>
+
+    <div class="controls-row">
+      <label>Columnas
+        <input type="number" id="builder-cols" value="6" min="3" max="10">
+      </label>
+      <button id="btn-builder-resize" class="btn-secondary">Actualizar tamaño</button>
+      <button id="btn-builder-clear" class="btn-secondary">Limpiar valores</button>
+    </div>
+
+    <div class="grid-wrap">
+      <div class="frieze-grid builder" id="builder-grid"></div>
+    </div>
+
+    <p class="grid-caption">Consejo: empieza llenando la fila justo debajo de
+      los unos con enteros positivos; luego intenta completar la siguiente
+      fila para que cada diamante cumpla <code>ad &minus; bc = 1</code>.</p>
+  </section>
+
+</main>
+
+<div class="frieze-band" aria-hidden="true"></div>
+
+<footer>
+  <p>Hecho para la exposición de Anerson · Frisos de Conway&ndash;Coxeter</p>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
