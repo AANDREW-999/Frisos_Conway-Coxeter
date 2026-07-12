@@ -19,6 +19,10 @@
   --font-display: 'Fraunces', serif;
   --font-body: 'IBM Plex Sans', sans-serif;
   --font-mono: 'IBM Plex Mono', monospace;
+
+  /* Variables de cuadrícula dinámicas */
+  --cell-size: 46px;
+  --grid-gap: 0.4rem;
 }
 
 * { box-sizing: border-box; }
@@ -335,7 +339,7 @@ input[type="number"] {
 .frieze-grid {
   display: flex;
   flex-direction: column;
-  gap: 0.4rem;
+  gap: var(--grid-gap);
   width: max-content;
   margin: 0 auto;
   font-family: var(--font-mono);
@@ -343,12 +347,12 @@ input[type="number"] {
 
 .grid-row {
   display: flex;
-  gap: 0.4rem;
+  gap: var(--grid-gap);
 }
 
 .grid-cell {
-  width: 46px;
-  height: 46px;
+  width: var(--cell-size);
+  height: var(--cell-size);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -475,7 +479,10 @@ footer {
    RESPONSIVE
    ============================================================ */
 @media (max-width: 560px) {
-  .grid-cell { width: 38px; height: 38px; font-size: 0.85rem; }
+  :root {
+    --cell-size: 38px;
+  }
+  .grid-cell { font-size: 0.85rem; }
   .diamond-hero { --cell: 42px; }
   .controls-row { align-items: stretch; }
 }

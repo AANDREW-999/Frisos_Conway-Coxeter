@@ -170,7 +170,7 @@ function renderGrid(revealAll) {
   const rowEls = EXAMPLE_ROWS.map(row => {
     const rowEl = document.createElement('div');
     rowEl.className = 'grid-row';
-    rowEl.style.marginLeft = `${row.indent * 25}px`;
+    rowEl.style.marginLeft = `calc(${row.indent} * (var(--cell-size) + var(--grid-gap)))`;
     row.values.forEach((val, i) => {
       const cell = document.createElement('div');
       cell.className = 'grid-cell' + (row.boundary ? ' boundary' : '');
@@ -302,7 +302,7 @@ function buildBuilderGrid() {
   rows.forEach((row, r) => {
     const rowEl = document.createElement('div');
     rowEl.className = 'grid-row';
-    rowEl.style.marginLeft = `${indents[r] * 25}px`;
+    rowEl.style.marginLeft = `calc(${indents[r]} * (var(--cell-size) + var(--grid-gap)))`;
     for (let i = 0; i < row.n; i++) {
       const cell = document.createElement('div');
       cell.className = 'grid-cell revealed';
