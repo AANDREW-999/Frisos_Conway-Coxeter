@@ -286,6 +286,80 @@ document.getElementById('btn-calc-clear').addEventListener('click', () => {
 const builderGrid = document.getElementById('builder-grid');
 let N = 6;
 
+function getBuilderInput(row, col) {
+  return builderGrid.querySelector(`input[data-row="${row}"][data-col="${col}"]`);
+}
+
+function sanitizeNumber(x) {
+  if (!Number.isFinite(x)) return '';
+  if (Math.abs(x - Math.round(x)) < 1e-9) return String(Math.round(x));
+  return String(Math.round(x * 1e6) / 1e6);
+}
+
+function writeBuilderRow(key, values) {
+  values.forEach((val, i) => {
+    const input = getBuilderInput(key, i);
+    if (input) input.value = val == null ? '' : sanitizeNumber(val);
+  });
+}
+
+function firstColumnReady() {
+  const a0 = parseFloat(getBuilderInput('A', 0)?.value ?? '');
+  const b0 = parseFloat(getBuilderInput('B', 0)?.value ?? '');
+  const c0 = parseFloat(getBuilderInput('C', 0)?.value ?? '');
+  return Number.isFinite(a0) && Number.isFinite(b0) && Number.isFinite(c0) &&
+    Math.abs(a0) > 1e-12 && Math.abs(b0) > 1e-12 && Math.abs(c0) > 1e-12;
+}
+
+function fillFrieze() {
+  // Resetea las columnas calculadas para evitar residuos de ejecuciones previas.
+  ['A', 'B', 'C'].forEach(rowKey => {
+    builderGrid.querySelectorAll(`input[data-row="${rowKey}"]`).forEach(inp => {
+      if (Number(inp.dataset.col) > 0) inp.value = '';
+    });
+  });
+
+  if (!firstColumnReady()) {
+    validateBuilder();
+    return;
+  }
+
+  const A = Array(N).fill(null);
+  const B = Array(N - 1).fill(null);
+  const C = Array(N - 1).fill(null);
+
+  A[0] = parseFloat(getBuilderInput('A', 0).value);
+  B[0] = parseFloat(getBuilderInput('B', 0).value);
+  C[0] = parseFloat(getBuilderInput('C', 0).value);
+
+  const nextFromDiamond = (a, b, c) => {
+    if (!Number.isFinite(a) || !Number.isFinite(b) || !Number.isFinite(c) || Math.abs(a) < 1e-12) return null;
+    return (b * c + 1) / a;
+  };
+
+  for (let i = 0; i < N - 1; i++) {
+    A[i + 1] = nextFromDiamond(A[i], 1, B[i]);
+    if (A[i + 1] == null) break;
+
+    if (i < N - 2) {
+      B[i + 1] = nextFromDiamond(B[i], A[i + 1], C[i]);
+      if (B[i + 1] == null) break;
+
+      C[i + 1] = nextFromDiamond(C[i], B[i + 1], 1);
+      if (C[i + 1] == null) break;
+    }
+  }
+
+  writeBuilderRow('A', A);
+  writeBuilderRow('B', B);
+  writeBuilderRow('C', C);
+  validateBuilder();
+}
+
+function onBuilderSeedInput() {
+  fillFrieze();
+}
+
 function buildBuilderGrid() {
   builderGrid.innerHTML = '';
   const rows = [
@@ -315,7 +389,12 @@ function buildBuilderGrid() {
         input.className = 'builder-input';
         input.dataset.row = row.key;
         input.dataset.col = i;
-        input.addEventListener('input', validateBuilder);
+        if (i === 0) {
+          input.addEventListener('input', onBuilderSeedInput);
+        } else {
+          input.readOnly = true;
+          input.tabIndex = -1;
+        }
         cell.appendChild(input);
       }
       rowEl.appendChild(cell);
@@ -372,7 +451,10 @@ document.getElementById('btn-builder-resize').addEventListener('click', () => {
   N = Math.min(10, Math.max(3, isNaN(val) ? 6 : val));
   document.getElementById('builder-cols').value = N;
   buildBuilderGrid();
+  validateBuilder();
 });
+
+document.getElementById('btn-builder-generate').addEventListener('click', fillFrieze);
 
 document.getElementById('btn-builder-clear').addEventListener('click', () => {
   builderGrid.querySelectorAll('input').forEach(inp => inp.value = '');
