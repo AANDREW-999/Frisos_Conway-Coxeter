@@ -434,10 +434,26 @@ function validateBuilder() {
   const cellsB = cellsForRow('B');
   const cellsC = cellsForRow('C');
 
-  [...cellsA, ...cellsB, ...cellsC].forEach(c => c.classList.remove('valid', 'invalid'));
+  [...cellsA, ...cellsB, ...cellsC].forEach(c => c.classList.remove('pyramid-valid', 'pyramid-invalid'));
+
+  if (firstColumnReady() && firstColumnAllEqual()) {
+    const seed = A[0];
+    const paintRow = (values, cells) => {
+      values.forEach((val, i) => {
+        if (cells[i] && Number.isFinite(val) && Math.abs(val - seed) > 1e-9) {
+          cells[i].classList.add('pyramid-valid');
+        }
+      });
+    };
+
+    paintRow(A, cellsA);
+    paintRow(B, cellsB);
+    paintRow(C, cellsC);
+    return;
+  }
 
   function markDiamond(ok, cells) {
-    cells.forEach(c => { if (c) c.classList.add(ok ? 'valid' : 'invalid'); });
+    cells.forEach(c => { if (c) c.classList.add(ok ? 'pyramid-valid' : 'pyramid-invalid'); });
   }
 
   // A-B diamonds (b = 1)

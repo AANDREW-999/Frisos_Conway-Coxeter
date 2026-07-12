@@ -413,15 +413,24 @@ input[type="number"]::-webkit-inner-spin-button {
   font-family: var(--font-mono);
   font-size: 1rem;
 }
-.grid-cell.valid { border-color: var(--teal); background: var(--teal-soft); }
-.grid-cell.invalid { border-color: #556273; background: var(--panel); }
 
-.frieze-grid.builder.frieze-green .grid-cell.editable {
-  border-color: #4f8a64;
-  background: rgba(85, 183, 169, 0.18);
+/* Resaltado solo para celdas interiores que pertenecen a diamantes */
+.frieze-grid.builder .grid-cell.pyramid-valid {
+  border-color: var(--teal);
+  background: var(--teal-soft);
 }
 
-.frieze-grid.builder.frieze-green .builder-input {
+.frieze-grid.builder .grid-cell.pyramid-invalid {
+  border-color: #556273;
+  background: var(--panel);
+}
+
+.frieze-grid.builder.frieze-green .grid-cell.pyramid-valid {
+  border-color: #4f8a64;
+  background: rgba(85, 183, 169, 0.24);
+}
+
+.frieze-grid.builder.frieze-green .grid-cell.pyramid-valid .builder-input {
   color: #bfe9d1;
 }
 
