@@ -154,9 +154,9 @@ renderSequence(false);
 const EXAMPLE_ROWS = [
   { values: [0, 0, 0, 0, 0, 0], boundary: true, indent: 1 },
   { values: [1, 1, 1, 1, 1, 1, 1], boundary: false, indent: 0.5 },
-  { values: [1, 2, 2, 2, 1, 4, 1], boundary: false, indent: 0, fundamental: [1, 2, 3] },
-  { values: [1, 3, 3, 1, 3, 3], boundary: false, indent: 0.5, fundamental: [1, 2] },
-  { values: [1, 4, 1, 2, 2, 2], boundary: false, indent: 1, fundamental: [1] },
+  { values: [1, 2, 2, 2, 1, 4, 1], boundary: false, indent: 0, fundamental: [1, 2, 3, 5] }, // Añadido índice 5
+  { values: [1, 3, 3, 1, 3, 3], boundary: false, indent: 0.5, fundamental: [1, 2, 4, 5] }, // Añadidos índices 4, 5
+  { values: [1, 4, 1, 2, 2, 2], boundary: false, indent: 1, fundamental: [1, 3, 4, 5, 6] },    // Añadidos índices 4, 5, 6
   { values: [1, 1, 1, 1, 1], boundary: false, indent: 1.5 },
   { values: [0, 0, 0, 0], boundary: true, indent: 2 },
 ];
