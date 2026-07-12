@@ -311,6 +311,18 @@ function firstColumnReady() {
     Math.abs(a0) > 1e-12 && Math.abs(b0) > 1e-12 && Math.abs(c0) > 1e-12;
 }
 
+function firstColumnAllEqual() {
+  const a0 = parseFloat(getBuilderInput('A', 0)?.value ?? '');
+  const b0 = parseFloat(getBuilderInput('B', 0)?.value ?? '');
+  const c0 = parseFloat(getBuilderInput('C', 0)?.value ?? '');
+  if (!Number.isFinite(a0) || !Number.isFinite(b0) || !Number.isFinite(c0)) return false;
+  return Math.abs(a0 - b0) < 1e-9 && Math.abs(b0 - c0) < 1e-9;
+}
+
+function updateFriezeGreenState() {
+  builderGrid.classList.toggle('frieze-green', firstColumnReady() && firstColumnAllEqual());
+}
+
 function fillFrieze() {
   // Resetea las columnas calculadas para evitar residuos de ejecuciones previas.
   ['A', 'B', 'C'].forEach(rowKey => {
@@ -320,6 +332,7 @@ function fillFrieze() {
   });
 
   if (!firstColumnReady()) {
+    updateFriezeGreenState();
     validateBuilder();
     return;
   }
@@ -353,6 +366,7 @@ function fillFrieze() {
   writeBuilderRow('A', A);
   writeBuilderRow('B', B);
   writeBuilderRow('C', C);
+  updateFriezeGreenState();
   validateBuilder();
 }
 
@@ -451,17 +465,18 @@ document.getElementById('btn-builder-resize').addEventListener('click', () => {
   N = Math.min(10, Math.max(3, isNaN(val) ? 6 : val));
   document.getElementById('builder-cols').value = N;
   buildBuilderGrid();
+  updateFriezeGreenState();
   validateBuilder();
 });
 
-document.getElementById('btn-builder-generate').addEventListener('click', fillFrieze);
-
 document.getElementById('btn-builder-clear').addEventListener('click', () => {
   builderGrid.querySelectorAll('input').forEach(inp => inp.value = '');
+  updateFriezeGreenState();
   validateBuilder();
 });
 
 buildBuilderGrid();
+updateFriezeGreenState();
 
 /* TODO (ideas para seguir extendiendo con Copilot):
    - Exportar el friso construido como imagen (canvas.toBlob) o PDF.
