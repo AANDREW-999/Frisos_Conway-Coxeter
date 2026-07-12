@@ -244,6 +244,8 @@ main {
 }
 
 input[type="number"] {
+  -moz-appearance: textfield;
+  appearance: textfield;
   background: var(--panel);
   border: 1px solid var(--line);
   color: var(--parchment);
@@ -252,6 +254,12 @@ input[type="number"] {
   font-family: var(--font-mono);
   width: 90px;
   font-size: 0.95rem;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .btn-primary, .btn-secondary {
@@ -391,9 +399,12 @@ input[type="number"] {
   transform: none;
   background: var(--panel);
 }
-.frieze-grid.builder input {
+.frieze-grid.builder .builder-input {
+  display: block;
   width: 100%;
   height: 100%;
+  margin: 0;
+  padding: 0;
   border: none;
   background: transparent;
   color: var(--parchment);

@@ -312,6 +312,7 @@ function buildBuilderGrid() {
         cell.classList.add('editable');
         const input = document.createElement('input');
         input.type = 'number';
+        input.className = 'builder-input';
         input.dataset.row = row.key;
         input.dataset.col = i;
         input.addEventListener('input', validateBuilder);
